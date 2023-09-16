@@ -1,0 +1,22 @@
+#+title: 01 Foreword & Preface
+
+"One cannot build a beautiful and functional bridge without
+a knowledge of steel and dirt and considerable mathematical
+techinque for using theis knowledge to compute the
+properties of structures. Similarly, one cannot build a
+beautiful computer system without a deep understanding
+of how to 'previsualize' the process generated
+by the procedures one writes."
+
+#+begin_src scheme
+(define atom?
+  (lambda (x)
+    (and (not (pair? x)) (not (null? x)))))
+
+(atom? (quote ()))
+#+end_src
+
+#+RESULTS:
+: #f
+
+make sure it's right, it should return f
