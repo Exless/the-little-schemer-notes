@@ -1,0 +1,6 @@
+#+title: Readme
+
+** What is this?
+my personal notes that are accumulating
+as i go through the book 'The Little Schemer'
+4th Edition by Daniel P. Friedman
