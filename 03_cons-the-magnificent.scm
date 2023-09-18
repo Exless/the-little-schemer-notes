@@ -92,3 +92,157 @@
 ;; THE SECOND COMMANDMENT
 ;; USE cons TO BUILD LISTS
 ;;
+
+
+;; what is
+(define l '((apple peach pumpkin)
+            (plum pear cherry)
+            (grape raisin pea)
+            (bean carrot egpglant)))
+
+(firsts l)
+;; => (apple plum grape bean)
+
+;; what is
+(define l '((a b) (c d) (e f)))
+(firsts l)
+;; => (a c e)
+
+(define l '())
+(firsts l)
+;; => '()
+
+;; what is
+(define l '((five plums)
+            (four)
+            (eleven green oranges)))
+(firsts l)
+;; => (five four eleven)
+
+(define l '(((five plums) four)
+           (eleven green oranges)
+           ((no) more)))
+(firsts l)
+(seconds l)
+;; => ((five plums) eleven (no))
+
+;; what does first do?
+;; takes a list of lists
+;; returns a list with each element
+;; being the first element from each
+;; list
+
+;; try to write the funciton firsts
+
+(define firsts
+  (lambda (x)
+    (cond
+     ((null? x) '())
+     (else
+      (cons
+       (car (car x))
+       (firsts (cdr x))
+       ))
+     )))
+
+;; try to write the funciton seconds
+(define seconds
+  (lambda (x)
+    (cond
+     ((null? x) '())
+     (else (cons
+            ;; get the 2nd element
+            (car (cdr (car x)))
+            (seconds (cdr x))
+            ))
+     )))
+
+
+;;
+;; THE THIRD COMMANDMENT
+;; WHEN BUILDING A LIST, DESCRIBE THE FIRST TYPICAL ELEMENT
+;; AND THEN cons IT ONTO THE NATURAL RECURSION
+
+;; what is the typical element and the natural recursion
+;; of first?
+
+(cons
+ (car (car x))
+ ;; ^ typical element
+ firsts (cdr x)
+ ;; ^ natural recursion
+ )
+
+;; for the 3rd commandment the cond line
+((null? x) '())
+;; is important
+;; we can not return #f,
+;; that is only valid when we want to answer
+;; questions about lists
+;;
+;; when we want to actually build lists
+;; as we are commanded by cons
+;; we need to use '() as the null?
+
+
+;; what is
+(define old 'fudge)
+(define new 'topping)
+(define lat '(ice cream fudge for dessert))
+
+(insertR new old lat)
+(insertL new old lat)
+;; => (ice cream fudge topping for dessert)
+(define old 'and)
+(define new 'jalapeno)
+(define lat '(tacos tamales and salsa))
+
+(insertR new old lat)
+(insertL new old lat)
+;; => (tacos tamales and jalapeno salsa)
+
+;; what does (insertR new old lat) do?
+;; goes from the right to the left in lat
+;; when it finds the old element
+;; it inserts the new into it from the right
+
+
+;; try to write insertR
+
+(define insertR
+  (lambda (new old lat)
+    (cond
+     ((null? lat) '())
+     ((eq? old (car lat))
+      (cons (car lat)
+            (cons new (cdr lat)))
+      )
+     (else (cons
+            (car lat)
+            (insertR new old (cdr lat)))
+           )
+     )))
+
+;; try with insertL
+(define insertL
+  (lambda (new old lat)
+    (cond
+     ((null? lat) '())
+     ((eq? old (car lat))
+      (cons new
+            lat))
+     (else
+      (cons (car lat) (insertL new old (cdr lat)))
+      )))
+  )
+
+;; now try subst
+;; subst should replace old with new
+;; and return the new list
+
+(define old 'and)
+(define new 'jalapeno)
+(define lat '(tacos tamales and salsa))
+
+(subst new old lat)
+;; => (tacos tamales jalapeno salsa)
