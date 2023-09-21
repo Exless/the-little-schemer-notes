@@ -246,3 +246,153 @@
 
 (subst new old lat)
 ;; => (tacos tamales jalapeno salsa)
+
+(define subst
+  (lambda (new old lat)
+    (cond
+     ((null? lat) '())
+     ((eq? old (car lat)) (cons
+                           new (cdr lat)))
+     (else (cons
+            (car lat)
+            (subst old new (cdr lat))))
+     ))
+  )
+
+;; now try subst2
+
+
+(define subst2
+  (lambda (new o1 o2 lat)
+    (cond
+     ((null? lat) '())
+     ((eq? o1 (car lat)) (cons new (cdr lat)))
+     ((eq? o2 (car lat)) (cons new (cdr lat)))
+     (else (cons
+            (car lat)
+            (subst2 new o1 o2 (cdr lat))
+                 ))
+     )))
+
+;; rewrite subst2 as subst3 using an or
+
+(define subst3
+  (lambda (new o1 o2 lat)
+    (cond
+     ((null? lat) '())
+     ((or
+       (eq? o1 (car lat))
+       (eq? o2 (car lat))
+       ) (cons new (cdr lat)))
+     (else (cons
+            (car lat)
+            (subst3 new o1 o2 (cdr lat))
+            ))
+     )))
+
+
+
+
+
+
+(define new 'vanilla)
+(define o1 'chocolate)
+(define o2 'banana)
+(define lat '(banana ice cream
+              with cocolate topping))
+
+(subst2 new o2 o1 lat)
+(subst3 new o1 o2 lat)
+;; => (vanila ice cream with cocolate topping)
+
+;; write the function multirember which
+;; gives as its final value the lat with
+;; all occurences of a removed
+
+(define multirember
+  (lambda (a lat)
+    (cond
+     ((null? lat) '())
+     ((eq? a (car lat))
+      (multirember a (cdr lat)))
+     (else (cons (car lat) (multirember a (cdr lat))))
+     )))
+
+(define a 'cup)
+(define lat '(coffee cup tea cup and hick cup))
+(multirember a lat)
+
+
+;; now write the function multiinsertR
+
+(define multiinsertR
+  (lambda (new old lat)
+    (cond
+     ((null? lat) '())
+     ((eq? (car lat) old)
+      (cons
+       (car lat)
+       (cons new
+             (multiinsertR new old (cdr lat))
+             )))
+     (else
+      (cons
+       (car lat)
+       (multiinsertR new old (cdr lat))))
+     )))
+
+;; now do multiinsertL
+(define multiinsertL
+  (lambda (new old lat)
+    (cond
+     ((null? lat) '())
+     ((eq? (car lat) old)
+      (cons
+       new
+       (cons
+        (car lat)
+        (multiinsertL new old (cdr lat)))
+       ))
+     (else
+      (cons
+       (car lat)
+       (multiinsertL new old (cdr lat))
+       ))
+     )))
+
+(define new 'sugar)
+(define old 'cup)
+(define lat '(coffee cup tea cup and hick cup))
+(multiinsertR new old lat)
+(multiinsertL new old lat)
+
+
+;;
+;; THE FOURTH COMMANDMENT (preliminary)
+;; Always change AT LEAST ONE ARGUMENT while recurring.
+;; It must be changed to be CLOSER TO TERMINATION.
+;; The chaning argument must be tested in the
+;; termination condition: WHEN USING cdr,
+;; TEST TERMINATION WITH null?
+;;
+
+;; now write the function multisubst
+(define multisubst
+  (lambda (new old lat)
+    (cond
+     ((null? lat) '())
+     ((eq? (car lat) old)
+      (cons new
+            (multisubst new old (cdr lat))
+            ))
+     (else
+      (cons
+       (car lat)
+       (multisubst new old (cdr lat))
+       ))
+     )))
+
+(define new 'sugar)
+(define old 'cup)
+(define lat '(coffee cup tea cup and hick cup))
+(multisubst new old lat)
