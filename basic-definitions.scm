@@ -1,7 +1,3 @@
-(define-module (basic-definitions)
-  :export (atom?
-           member?))
-
 (define atom?
   (lambda (x)
     (and (not (pair? x)) (not (null? x)))))
@@ -14,3 +10,8 @@
      ((eq? (car lat) a) #t)
      (else (member? a (cdr lat))
            ))))
+
+(define-module (basic-definitions)
+  :export (atom?
+           member?))
+
