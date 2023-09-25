@@ -355,3 +355,48 @@
  '(4 6 8 1)
  '(3 7)
  )
+
+;; what is
+(> 12 133)
+;; #f
+
+;; what is
+(> 120 11)
+;; #t
+
+;; on how many number do we have to recur > ?
+;;
+;; n and m
+
+;; how do we recur
+;; using sub1
+;;
+;; now many questions to ask about n and m
+;; (null? n)
+;; (null? m)
+;; else
+
+
+;; write the function greater-than
+;; using zero and sub1
+
+(define greather-than
+  (lambda (n m)
+    (cond
+     ((null? n) #f)
+     ((null? m) #t)
+     (else (greather-than (sub1 n) (sub1 m)))
+     )))
+
+(greather-than 120 11)
+
+;; here is the definition of equals-num
+
+(define equals-num
+  (lambda (n m)
+    (cond
+     ((zero? n) (zero? m))
+     ((zero? m) #f)
+     (else )))
+
+;
