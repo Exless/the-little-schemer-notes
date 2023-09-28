@@ -392,11 +392,50 @@
 
 ;; here is the definition of equals-num
 
-(define equals-num
+(define equals-sum1
   (lambda (n m)
     (cond
      ((zero? n) (zero? m))
      ((zero? m) #f)
-     (else )))
+     (else (equals-sum
+            (sub1 n)
+            (sub1 m)
+            )))))
 
-;
+(equals-sum1 3 20)
+(equals-sum2 20 20)
+
+;; now write it using < and >
+(define equals-sum2
+  (lambda (n m)
+    (cond
+     ((< n m) #f)
+     ((> n m) #f)
+     (else #t)
+     )))
+
+;; does this mean we have two different
+;; functions for testing equality of atoms?
+
+
+;; yes! its = numbers, and eq? for the others
+(up 1 1) ;; => 1
+(up 2 3) ;; => 8
+(up 5 3) ;; => 125
+
+;; now write the function up
+
+(define up
+  (lambda (n m)
+    (cond
+     ((zero? m) 1)
+     (else (* n (up n (sub1 m))))
+     )))
+
+;; what is a good name for this function
+(define ???
+  (lambda (n m)
+    (cond
+     ((< n m) 0)
+     (else (add1 (??? (- n m) m)))
+     )))
