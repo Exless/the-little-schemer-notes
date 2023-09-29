@@ -432,6 +432,8 @@
      (else (* n (up n (sub1 m))))
      )))
 
+
+
 ;; what is a good name for this function
 (define ???
   (lambda (n m)
@@ -439,3 +441,142 @@
      ((< n m) 0)
      (else (add1 (??? (- n m) m)))
      )))
+
+;; what does the first question ask?
+;; => it determines wether the first argument
+;; is less than the 2nd one
+;;
+;; what does the 2nd question ask?
+;; it adds as many 1's as ms can fit in ns
+;;
+;; in other words, division
+
+;; what is (/ 15 4)
+;; => 3
+;;
+;;
+;; how do we get there?
+;; (/ 15 4) = 1 + (/ 11 4)
+;;          = 1 + 1 + (/ 7 4)
+;;          = 1 + 1 + 1 + (/ 3 4)
+;;          = 1 + 1 + 1 + 0
+;;          = 3
+
+;; what is the value of
+(define lat '(hotdogs with mustard sauerkraut and pickels))
+(length lat) ;; 6
+
+;; write the funciton length
+(define length1
+  (lambda (lat)
+    (cond
+     ((null? lat) 0)
+     (else (add1 (length1 (cdr lat))))
+     )))
+
+(length1 lat) ;; 6
+
+;; what is
+(define lat '(lasagna spagetti ravioli macaroni meatball))
+(pick 4 lat) ;; => macaroni
+(pick-ref 4 lat) ;; => macaroni
+
+;; what is
+(pick 0 '(a)) ;; => no answer
+(pick-ref 0 '(a)) ;; => no answer
+
+;; write the funciton pick
+(define pick
+  (lambda (n lat)
+    (cond
+     ((zero? n) '())
+     ((eq? n 1) (car lat))
+     (else (pick (sub1 n) (cdr lat)))
+     )))
+
+;; reference implementation from book
+(define pick-ref
+  (lambda (n lat)
+    (cond
+     ((zero? (sub1 n)) (car lat))
+     (else (pick-ref (sub1 n) (cdr lat))))))
+
+;; what is
+(define n 3)
+(define lat '(hotdogs with hot mustard))
+(rempick n lat) ;; => (hotdogs with mustard)
+
+;; write rempick
+(define rempick
+  (lambda (n lat)
+    (cond
+     ((zero? (sub1 n)) (cdr lat))
+     (else (cons (car lat)
+            (rempick (sub1 n) (cdr lat))))
+     )))
+
+;; true or false?
+(number? 'tomato)
+
+;; true or false?
+(number? 76)
+
+;; can you write number?
+;; => no because it's a primitive
+;; function
+
+;; write no-nums which gives
+;; as a final value a lat
+;; obtained by removing all the numbers from the lat
+
+(define no-nums
+  (lambda (lat)
+    (cond
+    ((null? lat) '())
+    ((number? (car lat)) (no-nums (cdr lat)))
+    (else (cons (car lat) (no-nums (cdr lat))))
+    )))
+
+
+;; test
+(define lat '(5 pears 6 prunes 9 dates))
+(no-nums lat)
+(all-nums)
+
+;; write all nums, which extracts
+;; a tup of all the numbers in lat
+(not #f)
+
+(define all-nums
+  (lambda (lat)
+    (cond
+     ((null? lat) '())
+     ((not (number? (car lat)))
+      (all-nums (cdr lat)))
+     (else (cons
+            (car lat)
+            (all-nums (cdr lat))
+            )))))
+
+
+
+(define lat '(5 pears 6 prunes 9 dates))
+(all-nums lat)
+
+;; write the function egan?
+;; which is true if its
+;; two arguments a1, a2
+;; are the same atom, remember
+;; to use = for numbers and eq? for other atoms
+
+(define egan?
+  (lambda (a1 a2)
+    (cond
+     ((and (number? a1) (number? a2)) (= a1 a2))
+     (else (eq? a1 a2))
+     )))
+
+(egan? 1 3)
+(egan? 3 3)
+(egan? 'a 'a)
+(egan? 1 'a)
