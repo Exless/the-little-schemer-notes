@@ -580,3 +580,56 @@
 (egan? 3 3)
 (egan? 'a 'a)
 (egan? 1 'a)
+
+;; now write the function occour which counts
+;; the number an atom a appears in a lat
+(define occour
+  (lambda (a lat)
+    (cond
+     ((null? lat) 0)
+     ((egan? a (car lat)) (add1 (occour a (cdr lat))))
+     (else (occour a (cdr lat)))
+     )))
+
+;; test
+(define a 'weiber)
+(define lat '(wiener weiber wissen was wiener weiber willen wiener weiber wollen waesche waschen))
+(occour a lat)
+
+;; works!
+
+;; write the function one?
+;; which checks if the input is one
+
+(define one?
+  (lambda (n)
+    (cond
+     ((egan? n 1) #t)
+     (else #f)
+     )))
+
+(one? 1)
+(one? 3)
+
+;; simplify it, make it a one-liner
+
+(define one?
+  (lambda (n)
+    (egan? n 1)))
+
+;; now rewrite thr function rempick
+;; that removes the n-th atom from a lat
+;; using one?
+
+(define rempick
+  (lambda (n lat)
+    (cond
+     ((one? n) (cdr lat))
+     (else (cons (car lat)
+            (rempick (sub1 n) (cdr lat))))
+     )))
+
+;; what is
+(define n 3)
+(define lat '(hotdogs with hot mustard))
+(rempick n lat) ;; => (hotdogs with mustard)
