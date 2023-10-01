@@ -165,6 +165,137 @@
 ;; when using cdr, test termination with null?
 ;; when using sub1, test termination with zero?
 
-
-
 ;; what is
+(define a 'banana)
+(define l '(
+            (banana)
+            (split ((((banana ice))))
+                   cream (banana))
+            (banana)
+            (bread)
+            (banana brandy)
+            ))
+
+(occour* a l)
+;; => 5
+
+;; write the occour* function
+(define occour*
+  (lambda (a l)
+    (cond
+     ((null? l) 0)
+     ((list? (car l))
+      (+
+       (occour* a (car l))
+       (occour* a (cdr l))))
+     ((eq? a (car l))
+      (add1 (occour* a (cdr l))))
+     (else (occour* a (cdr l)))
+     )))
+
+;; write subst*
+(define subst*
+  (lambda (new old l)
+    (cond
+     ((null? l) '())
+     ((list? (car l))
+      (cons
+       (subst* new old (car l))
+       (subst* new old (cdr l))))
+     ((eq? old (car l))
+      (cons
+       new
+       (subst* new old (cdr l))
+       ))
+     (else
+      (cons
+       (car l)
+       (subst* new old (cdr l))))
+     )))
+
+
+;; test
+(define new 'orange)
+(define old 'banana)
+(define l '(
+            (banana)
+            (split ((((banana ice))))
+                   cream (banana))
+            (banana)
+            (bread)
+            (banana brandy)
+            ))
+
+(subst* new old l)
+
+;; looks good!
+
+
+
+;; write insertL
+;;
+;; helper function so I don't have to cons
+;; twice
+(cons* 'a 'b '(c d e))
+
+(define insertL*
+  (lambda (new old l)
+    (cond
+     ((null? l) '())
+     ((list? (car l))
+      (cons
+       (insertL* new old (car l))
+       (insertL* new old (cdr l))))
+     ((eq? old (car l))
+      (cons* old new (cdr l)))
+     (else (cons
+            (car l)
+            (insertL* new old (cdr l)))
+     ))))
+
+
+;; test
+(define new 'pecker)
+(define old 'chuck)
+(define l '(
+            (how much (wood))
+            could
+            ((a (wood) chuck))
+            (((chuck)))
+            (if (a) ((wood chuck)))
+            could chuck wood
+            ))
+(insertL* new old l)
+;; looks good
+
+
+;; now write member*
+
+;; one way (probably cheating)
+(define member*
+  (lambda (a l)
+    (> (occour* a l) 0)))
+
+;; the way it was probably meant to be written
+(define member1*
+  (lambda (a l)
+    (cond
+     ((null? l) #f)
+     ((list? (car l))
+      (or
+       (member1* a (car l))
+       (member1* a (cdr l))))
+     ((eq? a (car l)) #t)
+     (else (or (member1* a (cdr l))))
+     )))
+
+
+
+(define a 'chips)
+(define l '((potato) (chips ((with) fish) (chips))))
+(define ll '(((())) this))
+(member* a l)
+
+
+;; write the function leftmost
+
