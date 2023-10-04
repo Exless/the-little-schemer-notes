@@ -54,7 +54,6 @@
      )))
 
 ;; what is
-(define new 'roast)
 (define old 'chuck)
 (define l '(
            (how much (wood))
@@ -66,18 +65,20 @@
             ))
 ;; =>
 ;; '(
-;;   (how much (wood))
+;;   (how much wood (wood))
 ;;   could
-;;   ((a (wood) chuck roast))
+;;   ((a (woo) chuck roast))
 ;;   (((chuck roast)))
 ;;   (if (a) ((wood chuck roast)))
 ;;   could chuck roast wood
 ;;   )
 ;;
+;; wood
 (insertR* new old l)
 
 ;; write insertR*
 
+(cons a '(b c))  ;; => '(a b c)
 (define insertR*
   (lambda (new old l)
     (cond
@@ -177,6 +178,7 @@
             ))
 
 (occour* a l)
+'(a b c d)
 ;; => 5
 
 ;; write the occour* function
@@ -298,4 +300,30 @@
 
 
 ;; write the function leftmost
+(define leftmost
+  (lambda (l)
+    (cond
+     ((null? (car l)) '())
+     ((list? (car l)) (leftmost (car l)))
+     (else (car l))
+     )))
 
+
+;; test
+(define l
+  '((potato)
+   (chips (with) fish)
+   (chips))
+  )
+
+
+(leftmost l)
+
+
+;; a simpler definition
+(define leftmost1
+  (lambda (l)
+    (cond
+     ((atom? (car l)))
+     (else (car l))
+     )))
