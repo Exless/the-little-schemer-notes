@@ -327,3 +327,122 @@
      ((atom? (car l)))
      (else (car l))
      )))
+
+;; what is
+
+(define x 'pizza)
+(define l '(mozarella pizza))
+(and (atom? (car l))
+     (eq? (car l) x))
+
+;; why is it false?
+;; (eq? (car l) x) is false
+;; because we ask if 'pizza and 'mozarella are equal
+
+;; what is
+(define l1 '(strawberry ice cream))
+(define l2 '(strawberry ice cream))
+(eqlist? l1 l2)
+;; => #t
+
+;; how
+;; write eqlist?
+
+(define eqlist?
+  (lambda (l1 l2)
+    (cond
+     ((and (null? l1) (null? l2)) #t)
+     ((null? l1) #f)
+     ((null? l2) #f)
+     ((and (list? (car l1)) (list? (car l2)))
+      (and (eqlist? (car l1) (car l2))
+            (eqlist? (cdr l1) (cdr l2))))
+     ((eq? (car l1) (car l2))
+      (and (eqlist? (cdr l1) (cdr l2))))
+     (else #f)
+     )))
+
+;; test
+(eqlist?
+ '(bannana (split))
+ '((bannana) (split)))
+
+(eqlist?
+ '(beef ((sausage)) (and (soda)))
+ '(beef ((salami)) (and (soda))))
+
+(eqlist?
+ '(beef ((sausage)) (and (soda)))
+ '(beef ((sausage)) (and (soda))))
+
+;; looks good
+;; rewrite with ors
+
+(define eqlist?
+  (lambda (l1 l2)
+    (cond
+     ;; we reached the end! (or just put in 2 empty lists)
+     ((and (null? l1) (null? l2)) #t)
+
+     ;; if one of them is true, the other false
+     ;; they arent equal, but the or will pass
+     ;; meaing they are not equal!
+     ;; equalception!
+     ((or
+       (null? l1)
+       (null? l2)) #f)
+
+     ;; if we have 2 lists at
+     ;; (car l1) (car l2) we split it
+     ;; and send it through recursively
+     ;; we split em up, and send them through
+     ;; the function reqcursively
+     ((and (list? (car l1)) (list? (car l2)))
+      (and (eqlist? (car l1) (car l2))
+            (eqlist? (cdr l1) (cdr l2))))
+
+     ;; (eq? (car l1) (car l2))
+     ;; covers the case where either of them
+     ;; is a list, meaning that one is a list
+     ;; and the other one an atom, meaning they are
+     ;; not equal
+     ((eq? (car l1) (car l2))
+      (and (eqlist? (cdr l1) (cdr l2))))
+
+     ;; and since they are at the bottom level
+     ;; not equal it must be false!
+     (else #f)
+     )))
+
+;; what is an S-expression?
+
+;; either an atom or a (possibly empty)
+;; list of S-expressions
+
+
+;; how many questions does equal? ask to determine
+;; whether two S-expressions are the same?
+;;
+;; according to the book Four.
+;; 1. is the 1st argument an atom or list?
+;; 2. is the 2nd argumument an atom or list?
+;; 3. are the 2 lists equal?
+;; 4. are the 2 atoms equal?
+
+
+
+;;
+;; THE SIXTH COMMANDMENT
+;; Simplify only after the function is correct.
+;;
+
+;; do an implementation of rember
+;; where you replace lat by a list
+;; l where the list l is an arbitray s-expression
+
+(define rember
+  (lambda (s l)
+    (cond
+     ((null? l) '())
+     ((atom? (car l)))
+     )))
