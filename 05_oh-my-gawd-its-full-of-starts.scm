@@ -444,5 +444,15 @@
   (lambda (s l)
     (cond
      ((null? l) '())
-     ((atom? (car l)))
+     ((eq? (car l) s) (cdr l))
+     (else (cons (car l)
+                 (rember s (cdr l))))
      )))
+
+;; is rember a star function now?
+;; => no
+;;
+;; why?
+;; => because it recurs the l list
+;; with the (cdr l) only
+;;
